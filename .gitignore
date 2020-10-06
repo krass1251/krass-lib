@@ -1,1 +1,12 @@
-dax-part-email.html
+#IDE
+.idea
+.vscode
+.ac-php-conf.json
+.tmp
+
+
+# compiled output
+/courses/javascript_practice/dist
+
+#node modules
+/courses/javascript_practice/node_modules/
