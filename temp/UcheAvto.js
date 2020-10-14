@@ -28,24 +28,31 @@ async function onEdit(e){
 
     if(previousValue === cellValue) {return;}
 
+    let SheetName = cell.getSheet().getName();
+    let isForma = SheetName === 'Форма';
+    let cellAdress = cell.getA1Notation();
+
     PropertiesService.getScriptProperties().setProperty('previousValue', cellValue);
-    if (cell.getA1Notation() == makerCell.getA1Notation() && cell.getSheet().getName() == 'Форма'){ // валидация для модели
+
+    if (isForma) {
+        if (cellAdress === makerCell.getA1Notation()){ // валидация для модели
         createValidationForModel();
         let arr = ["Lamborghini","Koenigsegg","Bentley","Bugatti","Ferrari","Maserati"];
-        if (arr.indexOf(makerCell.getValue()) != -1){
+        if (arr.indexOf(makerCell.getValue()) !== -1){
             modelCell.setValue("Ой, не пизди");
         } else {
             modelCell.setValue("");
         }
         modelCell.activateAsCurrentCell();
-    } else if (cell.getA1Notation() == nomerCell.getA1Notation() && cell.getSheet().getName() == 'Форма'){ // отослать запрос
-        if (String(cell.getValue()).length == 8){
+    } else if (cellAdress === nomerCell.getA1Notation()){ // отослать запрос
+        let AutoNumberLength = 8;
+        if (String(cell.getValue()).length === AutoNumberLength){
             sendResponseCell.check();
             analizeCarNumber();
             analizeVin();
             await GetRespone();
         }
-    } else if (cell.getA1Notation() == addToListCell.getA1Notation() && cell.getSheet().getName() == 'Форма'){ // перенести в список учета автом
+    } else if (cellAdress === addToListCell.getA1Notation()){ // перенести в список учета автом
         if (cell.isChecked()===true){
             clearFilter();
             clearSubTotalFormulas();
@@ -53,19 +60,22 @@ async function onEdit(e){
             addToList();
             cell.uncheck();
         }
-    } else if (cell.getA1Notation() == workVidCell.getA1Notation() && workVidCell.getSheet().getName() == cell.getSheet().getName()){ // валидация для типов работ
+    }
+    }
+
+    if (cellAdress == workVidCell.getA1Notation() && workVidCell.getSheet().getName() == SheetName){ // валидация для типов работ
         createValidationForWorkType(workVidCell.getValue(), workTypeCell);
         workTypeCell.clearContent();
         workTypeCell.activate();
-    } else if(cell.getRow() > 1 && cell.getColumn() == 10 && cell.getSheet().getName() == uchetSheet.getName()){ // валидация на общем списке машин
+    } else if(cell.getRow() > 1 && cell.getColumn() == 10 && SheetName == uchetSheet.getName()){ // валидация на общем списке машин
         createValidationForWorkType(cell.getValue(), cell.offset(0,1));
         cell.offset(0,1).clearContent();
         cell.offset(0,1).activate();
-    } else if (cell.getA1Notation() == vinCell.getA1Notation() && vinCell.getSheet().getName() == cell.getSheet().getName()){ // обработка VIN
+    } else if (cellAdress === vinCell.getA1Notation() && vinCell.getSheet().getName() == SheetName){ // обработка VIN
         if (String(vinCell.getValue()).length === 17){
             analizeVin();
         }
-    } else if (cell.getA1Notation() == 'A2' && cell.getSheet().getName() == 'Выписка'){ // выписка по владельцу
+    } else if (cellAdress == 'A2' && SheetName == 'Выписка'){ // выписка по владельцу
         if (cell.getValue() != ''){
             if (cell.getDataValidation().getCriteriaValues()[0].getValues().toString().split(',').indexOf(cell.getValue()) != -1){
                 clearFilter();
@@ -75,7 +85,7 @@ async function onEdit(e){
                 cell.offset(0,2).clearContent();
             }
         }
-    } else if (cell.getA1Notation() == 'B2' && cell.getSheet().getName() == 'Выписка'){ // выписка по номеру авто
+    } else if (cellAdress == 'B2' && SheetName == 'Выписка'){ // выписка по номеру авто
         if (cell.getValue() != ''){
             if (cell.getDataValidation().getCriteriaValues()[0].getValues().toString().split(',').indexOf(cell.getValue()) != -1){
                 clearFilter();
@@ -85,7 +95,7 @@ async function onEdit(e){
                 cell.offset(0,1).clearContent();
             }
         }
-    } else if (cell.getA1Notation() == 'C2' && cell.getSheet().getName() == 'Выписка'){ // выписка по VIN
+    } else if (cellAdress == 'C2' && SheetName == 'Выписка'){ // выписка по VIN
         if (cell.getValue() != ''){
             if (cell.getDataValidation().getCriteriaValues()[0].getValues().toString().split(',').indexOf(cell.getValue()) != -1){
                 clearFilter();
@@ -117,7 +127,7 @@ function addToList(){
             let searchArr = [/*записи*/, "Марка", "Модель", "Гос номер", "VIN", /Пробег*/, "Год", "Дата ТО", "Сумма", "Вид работы", "Тип работы", "Владелец", "Телефон"]
             let addArr = [id, makerCell.getValue(), modelCell.getValue(), num, vin, probegCell.getValue(), yearCell.getValue(), dat, summCell.getValue(),
                 workVidCell.getValue(), workTypeCell.getValue(), ownerCell.getValue(), phoneCell.getValue()]
-            let whatAddArr = [[1,2,3,4,5,6,7,8,9,10,11,12]];
+            let whatAddArr = [[]];
             for (let i = 0; i < searchArr.length; i++){
                 let z = find(searchArr[i],arr);
                 whatAddArr[0][z] = addArr[i];
@@ -158,8 +168,8 @@ function addToList(){
 }
 
 function GetRespone(){
-    if (sendResponseCell.isChecked()===true){
-        if (String(nomerCell.getValue()).length == 8){
+    if (sendResponseCell.isChecked() === true){
+        if (String(nomerCell.getValue()).length === 8){
             clearFilter();
             clearSubTotalFormulas();
             let url = "https://baza-gai.com.ua/nomer/" + replaceEngSymb(String(nomerCell.getValue()).toUpperCase());
@@ -188,7 +198,6 @@ function GetRespone(){
         createStyleForMainFromCell();
     }
 }
-
 
 function addModelToList(){
     let x =  modelCell.getDataValidation().getCriteriaValues()[0].getValues().toString().split(',').indexOf(modelCell.getValue());
@@ -219,11 +228,17 @@ function addWorkTypeToList(){
 
 function createValidationForModel(){
     let findCell = avtoSheet.getRange(1, 1, 1, avtoSheet.getLastColumn()).getValues()[0].indexOf(makerCell.getValue());
-    if (findCell != -1){
+    if (++findCell){
         findCell++;
         modelCell.clearDataValidations();
-        modelCell.setDataValidation(SpreadsheetApp.newDataValidation()
-            .requireValueInRange(avtoSheet.getRange(2, findCell, avtoSheet.getRange(1, findCell).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow() + 1, 1), true)
+        modelCell.setDataValidation(
+            SpreadsheetApp
+            .newDataValidation()
+            .requireValueInRange(
+                avtoSheet
+                .getRange(2, findCell, avtoSheet.getRange(1, findCell)
+                .getNextDataCell(SpreadsheetApp.Direction.DOWN)
+                .getRow() + 1, 1), true)
             .build());
     }
 }
@@ -242,7 +257,7 @@ function createValidationForWorkType(findValue,cellRange){
 function analizeCarNumber(){
     let num = replaceEngSymb(String(nomerCell.getValue()).toUpperCase());
     let i = count(num, uchetSheet.getRange(2, 4, uchetSheet.getLastRow()).getValues());
-    if (i != 0){
+    if (i !== 0){
         nomerCell.offset(0, 1).setValue('Количество записей с таким номером: ' + i);
     } else {
         nomerCell.offset(0, 1).clearContent();
@@ -250,17 +265,16 @@ function analizeCarNumber(){
 }
 
 function analizeVin(){
-    if (vinCell.getValue() != ''){
+    if (vinCell.getValue() !== ''){
         let vin = String(vinCell.getValue()).toUpperCase();
         let i = count(vin, uchetSheet.getRange(2, 5, uchetSheet.getLastRow()).getValues());
-        if (i != 0){
+        if (i !== 0){
             vinCell.offset(0, 1).setValue('Количество записей с таким VIN: ' + i);
         } else {
             vinCell.offset(0, 1).clearContent();
         }
     }
 }
-
 
 function createForOwner(){
 
