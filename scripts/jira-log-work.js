@@ -16,7 +16,7 @@
 	let userMail = 'andrei.krasovskii@p2h.com';
 	// месяц за который учитывать время, примеры: Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
 	let month = 'Dec';
-	// месяц за который учитывать время пример: 20
+	// год за который учитывать время пример: 20
 	let year = '20';
 
 	/*дальше не трогать*/
