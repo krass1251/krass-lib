@@ -174,11 +174,11 @@ let copylink  = "#copylink";
         }
 
         return result;
-    };
+    }
 
     function randomRange(min, max) {
         return Math.floor(Math.random() * (max + 1 - min)) + min;
-    };
+    }
 
     // https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
     const arrayShuffle = (array) => {
