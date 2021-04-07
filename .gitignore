@@ -44,3 +44,7 @@ yarn-error.log
 courses/angular-complete-guide/testem.log
 testem.log
 courses/angular-complete-guide/typings
+
+
+# Found Discount
+telegramBots/foundDiscount/node_modules
