@@ -1,0 +1,6 @@
+<div class="card">
+    <p>{{post.text}}</p>
+    <i *ngIf="post.autor">Autor: {{post.autor}}&nbsp;&nbsp;&nbsp;&nbsp;</i>
+    <small>date: {{post.date | date}}</small>
+    <button class="btn" (click)="deletePost(post.id)">&times;</button>
+</div>

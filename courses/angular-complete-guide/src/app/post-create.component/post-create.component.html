@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="form-control">
+        <div class="card">
+            <h2>Write your post</h2>
+            <input type="text" placeholder="Autor" [(ngModel)]="autor" #inputAutor>
+            <textarea name="post-text" cols="30" rows="2" placeholder="Post" [(ngModel)]="postText"></textarea>
+            <button class="btn" (click)="addNewPost()">Make post</button>
+            <button class="btn" (click)="focusAutor()">Focus Autor</button>
+        </div>
+    </div>
+</div>
