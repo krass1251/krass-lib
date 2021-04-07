@@ -12,6 +12,7 @@
 courses/angular-complete-guide/node_modules
 /courses/javascript_practice/node_modules/
 /node_modules/
+*/node_modules/
 
 
 # System Files
@@ -42,5 +43,4 @@ courses/angular-complete-guide/yarn-error.log
 yarn-error.log
 courses/angular-complete-guide/testem.log
 testem.log
-courses/angular-complete-guide/typings
 courses/angular-complete-guide/typings
