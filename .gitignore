@@ -48,3 +48,4 @@ courses/angular-complete-guide/typings
 
 # Found Discount
 telegramBots/foundDiscount/node_modules
+telegramBots/foundDiscount/.env
