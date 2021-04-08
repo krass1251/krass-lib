@@ -1,13 +1,32 @@
-const { Telegraf } = require('telegraf')
+const { Telegraf, Markup } = require('telegraf');
+const { runScraping } = require('./scraping/scraping');
+const { addNewProduct } = require('./addNewProduct');
 require('dotenv').config()
 
 const bot = new Telegraf(process.env.TOKEN);
 
+bot.start((ctx) => ctx.reply(`Welcome, ${ctx.update.message.from.first_name}! \nI can send notifications about discounts just send me the link to some product in the online shop 😉`),
+    Markup.keyboard([
+            ['➕ Добавить новый товар'],
+            ['☸ Setting', '📞 Feedback'],
+            ['⭐️Rate us', '👥 Share']
+        ])
+        .oneTime()
+        .resize()
 
-bot.start((ctx) => ctx.reply('Welcome'))
-bot.help((ctx) => ctx.reply('Send me a sticker'))
-bot.on('sticker', (ctx) => ctx.reply('nice'))
-bot.hears('hi', (ctx) => ctx.reply('Hey there'))
+    )
+bot.help((ctx) => ctx.reply('Just send me a link for some products from site https://www.6pm.com/'))
+
+const sendMessage = (chatId, message) => bot.telegram.sendMessage(chatId, message);
+
+runScraping(sendMessage);
+
+const regexLink = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm)
+bot.hears(regexLink, (ctx) => {
+    const link = ctx.update.message.text;
+    const id = ctx.update.message.from.id;
+    addNewProduct({link, id} , sendMessage);
+});
 bot.launch()
 
 // Enable graceful stop

@@ -1,6 +1,32 @@
-[
-  {
-    "link": "https://www.6pm.com/p/brooks-signal-3-blackened-pearl-black-red-clay/product/9480178/color/901214",
-    "price": "$84.95"
-  }
-]
+{
+  "users": [
+    {
+      "userName": "krass1251",
+      "chatId": "264242401",
+      "productsId": [
+        0
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": 0,
+      "name": "balance",
+      "link": "https://www.6pm.com/p/tommy-hilfiger-brink-white/product/9498556/color/14",
+      "prices": [
+        {
+          "date": "2021-04-06T11:47:11.108Z",
+          "price": "$84.95"
+        },
+        {
+          "date": "2021-04-08T11:47:11.108Z",
+          "price": "$51.25"
+        },
+        {
+          "date": "2021-04-08T13:49:34.902Z",
+          "price": "$41.25"
+        }
+      ]
+    }
+  ]
+}
