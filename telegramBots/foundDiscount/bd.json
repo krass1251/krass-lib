@@ -25,6 +25,36 @@
         {
           "date": "2021-04-08T13:49:34.902Z",
           "price": "$41.25"
+        },
+        {
+          "date": "2021-04-09T11:51:37.424Z",
+          "price": "$52.50"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "product 1",
+      "link": "https://www.6pm.com/p/new-balance-graphic-heathertech-tee-white/product/9485755/color/14",
+      "prices": [
+        {
+          "date": "2021-04-09T12:03:43.500Z",
+          "price": "$84.95"
+        },
+        {
+          "date": "2021-04-09T12:04:00.513Z",
+          "price": "$20.95"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "product 2",
+      "link": "https://www.6pm.com/p/timberland-tb7189-matte-black-smoke/product/9565831/color/364980",
+      "prices": [
+        {
+          "date": "2021-04-09T13:10:57.294Z",
+          "price": "$20.36"
         }
       ]
     }

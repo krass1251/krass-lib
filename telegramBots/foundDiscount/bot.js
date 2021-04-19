@@ -24,8 +24,8 @@ runScraping(sendMessage);
 const regexLink = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm)
 bot.hears(regexLink, (ctx) => {
     const link = ctx.update.message.text;
-    const id = ctx.update.message.from.id;
-    addNewProduct({link, id} , sendMessage);
+    const userId = ctx.update.message.from.id;
+    addNewProduct({link, userId} , sendMessage);
 });
 bot.launch()
 
